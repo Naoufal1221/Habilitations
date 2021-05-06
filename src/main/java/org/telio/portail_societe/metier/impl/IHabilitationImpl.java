@@ -10,7 +10,7 @@ import org.telio.portail_societe.dto.entities.*;
 import org.telio.portail_societe.generic.classes.ResponseOutput;
 import org.telio.portail_societe.idClass.*;
 import org.telio.portail_societe.metier.interfaces.IHabilitation;
-import org.telio.portail_societe.model.TypeSociete;
+
 
 import java.util.List;
 
@@ -245,39 +245,6 @@ public class IHabilitationImpl implements IHabilitation {
 
     @Override
     public ResponseOutput<SocieteDTO> update(Long id, SocieteDTO societeDTO) {
-
-//        ResponseOutput <SocieteDTO> societeDTOResponseOutput = new ResponseOutput<>();
-//        societeDTOResponseOutput.setTypeOperation("PUT");
-//        SocieteDTO societeDTO1 = societeConverter.toVo(societeRepository.findById(id).get());
-//        int cpt =0;
-//        if(societeDTO1 != null) {
-//            for (SocieteDTO record : societeConverter.toVoList(societeRepository.findAll())) {
-//                cpt += societeDTO.getNom().contains(record.getNom()) ? 1 : 0;
-//                System.out.println("==============================");
-//                System.out.println("record name :"+ record.getNom());
-//                System.out.println("societe DTO :"+societeDTO.getNom());
-//                System.out.println("==============================");
-//            }
-//            System.out.println("Compteur : " + cpt);
-//            if (cpt > 0) {
-//                societeDTOResponseOutput.setCode("404");
-//                societeDTOResponseOutput.setStatut("ERROR");
-//                societeDTOResponseOutput.setMessage("Enregistrement Non  Modifié ! ");
-//            } else {
-//                societeDTO.setId(id);
-//                societeRepository.save(societeConverter.toBo(societeDTO));
-//                societeDTOResponseOutput.setCode("200");
-//                societeDTOResponseOutput.setStatut("SUCCESS");
-//                societeDTOResponseOutput.setMessage("Enregistrement   Modifié ! ");
-//                societeDTOResponseOutput.setData(societeDTO);
-//            }
-//
-//            return societeDTOResponseOutput;
-//        }
-//        societeDTOResponseOutput.setCode("500");
-//        societeDTOResponseOutput.setStatut("NOT FOUND");
-//        societeDTOResponseOutput.setMessage("La societe Selectionné ne figure pas dans notre base de données");
-//        return societeDTOResponseOutput;
         ResponseOutput <SocieteDTO> societeDTOResponseOutput = new ResponseOutput<>();
         societeDTOResponseOutput.setTypeOperation("PATCH");
         if (societeRepository.existsById(id))
