@@ -2,6 +2,8 @@ package org.telio.portail_societe.metier.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telio.portail_societe.dao.*;
@@ -881,17 +883,101 @@ public class IHabilitationImpl implements IHabilitation {
 
     @Override
     public ResponseOutput<TypeEntiteDTO> persist(TypeEntiteDTO typeEntiteDTO) {
-        return null;
+        ResponseOutput <TypeEntiteDTO> typeEntiteDTOResponseOutput = new ResponseOutput<>();
+        typeEntiteDTOResponseOutput.setTypeOperation("POST");
+        if (typeEntiteRepository.existsByNom(typeEntiteDTO.getNom().toUpperCase()) ||
+                typeEntiteRepository.existsByCode(typeEntiteDTO.getCode().toUpperCase()) &&
+            typeEntiteRepository.existsBySociete(societeConverter.toBo(typeEntiteDTO.getSociete()))
+            )
+        {
+            typeEntiteDTOResponseOutput.setCode("404");
+            typeEntiteDTOResponseOutput.setStatut("ERROR");
+            typeEntiteDTOResponseOutput.setMessage(" Ce type d'entite est déjà définit pour cet societe");
+            return typeEntiteDTOResponseOutput;
+        }
+        typeEntiteRepository.save(typeEntiteConverter.toBo(typeEntiteDTO));
+        typeEntiteDTOResponseOutput.setCode("200");
+        typeEntiteDTOResponseOutput.setStatut("SUCCES");
+        typeEntiteDTOResponseOutput.setMessage("Le type d'entité " + typeEntiteDTO.getNom() + " a été bien inséré");
+        return typeEntiteDTOResponseOutput;
     }
 
     @Override
     public ResponseOutput<TypeEntiteDTO> update(TypeEntiteID typeEntiteID, TypeEntiteDTO typeEntiteDTO) {
-        return null;
+        ResponseOutput <TypeEntiteDTO> typeEntiteDTOResponseOutput = new ResponseOutput<>();
+        typeEntiteDTOResponseOutput.setTypeOperation("PATCH");
+        // SAME OBJECT
+        if(typeEntiteRepository.existsById(typeEntiteID))
+        {
+            // same object
+            TypeEntiteDTO wanted = typeEntiteConverter.toVo(typeEntiteRepository.findById(typeEntiteID).get());
+            if(wanted.getNom().equalsIgnoreCase(typeEntiteDTO.getNom()) &&
+               wanted.getCode().equalsIgnoreCase(typeEntiteDTO.getCode()) &&
+               wanted.getSociete().getId() == typeEntiteDTO.getSociete().getId())
+            {
+                typeEntiteDTOResponseOutput.setCode("300");
+                typeEntiteDTOResponseOutput.setStatut("WARNING");
+                typeEntiteDTOResponseOutput.setMessage("Vous n'avez effectuez aucun changement sur l'objet");
+                typeEntiteDTOResponseOutput.setData(typeEntiteDTO);
+                return typeEntiteDTOResponseOutput;
+            }
+            for (TypeEntiteDTO typeEntiteDTO1  : typeEntiteConverter.toVoList(typeEntiteRepository.findAll()))
+            {
+                if (typeEntiteDTO1.getSociete().getId() == typeEntiteDTO.getSociete().getId() &&
+                    typeEntiteDTO1.getId() != typeEntiteID.getId())
+                {
+                    if(typeEntiteDTO1.getNom().equalsIgnoreCase(typeEntiteDTO.getNom()))
+                    {
+                     typeEntiteDTOResponseOutput.setCode("404");
+                     typeEntiteDTOResponseOutput.setStatut("ERROR");
+                     typeEntiteDTOResponseOutput.setMessage(" Ce nom est déja utiliser pour cette societe ");
+                     return typeEntiteDTOResponseOutput;
+                    }
+                    if(typeEntiteDTO1.getCode().equalsIgnoreCase(typeEntiteDTO.getCode()))
+                    {
+                        typeEntiteDTOResponseOutput.setCode("404");
+                        typeEntiteDTOResponseOutput.setStatut("ERROR");
+                        typeEntiteDTOResponseOutput.setMessage(" Ce code est déja utiliser pour cette societe ");
+                        return typeEntiteDTOResponseOutput;
+                    }
+                }
+            }
+
+            typeEntiteDTO.setId(typeEntiteID.getId());
+            typeEntiteDTO.setSociete(societeConverter.toVo(societeRepository.findById(typeEntiteID.getSociete()).get()));
+            typeEntiteRepository.save(typeEntiteConverter.toBo(typeEntiteDTO));
+            typeEntiteDTOResponseOutput.setCode("200");
+            typeEntiteDTOResponseOutput.setStatut("SUCCES");
+            typeEntiteDTOResponseOutput.setMessage("Type Entité modifié ");
+
+        }
+        else
+        {
+            typeEntiteDTOResponseOutput.setCode("500");
+            typeEntiteDTOResponseOutput.setStatut("NOT FOUND");
+            typeEntiteDTOResponseOutput.setMessage(" Le type d'entité rechercher est introuvable");
+        }
+       return typeEntiteDTOResponseOutput;
     }
 
     @Override
     public ResponseOutput<TypeEntiteDTO> deleteTypeEntite(TypeEntiteID typeEntiteID) {
-        return null;
+        ResponseOutput <TypeEntiteDTO> typeEntiteDTOResponseOutput = new ResponseOutput<>();
+        typeEntiteDTOResponseOutput.setTypeOperation("DELETE");
+        if(typeEntiteRepository.existsById(typeEntiteID))
+        {
+            typeEntiteDTOResponseOutput.setCode("200");
+            typeEntiteDTOResponseOutput.setStatut("SUCCES");
+            typeEntiteDTOResponseOutput.setMessage(" Le type a été bien supprimer");
+            typeEntiteRepository.deleteById(typeEntiteID);
+        }
+        else
+        {
+            typeEntiteDTOResponseOutput.setCode("500");
+            typeEntiteDTOResponseOutput.setStatut("NOT FOUND");
+            typeEntiteDTOResponseOutput.setMessage("Aucun element n'est supprimé");
+        }
+        return typeEntiteDTOResponseOutput;
     }
 
     @Override

@@ -6,6 +6,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.telio.portail_societe.audit.Auditable;
 
 import javax.persistence.EntityListeners;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -22,9 +24,10 @@ public class UtilisateurDTO extends Auditable <String> {
     private SocieteDTO societeDTO;
     private EntiteDTO entiteDTO;
     private ProfilDTO profilDTO;
+    private List<RoleDTO> roleDTOList = new ArrayList<>();
 
 
-    public UtilisateurDTO(String nom, String prenom, String login, String password, String statut, String tel, SocieteDTO societeDTO, EntiteDTO entiteDTO, ProfilDTO profilDTO) {
+    public UtilisateurDTO(String nom, String prenom, String login, String password, String statut, String tel, SocieteDTO societeDTO, EntiteDTO entiteDTO, ProfilDTO profilDTO, List<RoleDTO> roleDTOList) {
         this.nom = nom;
         this.prenom = prenom;
         this.login = login;
@@ -34,6 +37,7 @@ public class UtilisateurDTO extends Auditable <String> {
         this.societeDTO = societeDTO;
         this.entiteDTO = entiteDTO;
         this.profilDTO = profilDTO;
+        this.roleDTOList = roleDTOList;
     }
 
     public String toUpperNom()

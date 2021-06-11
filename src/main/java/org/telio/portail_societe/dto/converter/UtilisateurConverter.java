@@ -18,6 +18,8 @@ public class UtilisateurConverter implements MapperMethods <UtilisateurDTO, Util
     private EntiteConverter entiteConverter;
     @Autowired
     private ProfilConverter profilConverter;
+    @Autowired
+    private RoleConverter roleConverter;
 
     @Override
     public UtilisateurDTO toVo(Utilisateur data) {
@@ -36,6 +38,7 @@ public class UtilisateurConverter implements MapperMethods <UtilisateurDTO, Util
         utilisateurDTO.setSocieteDTO(societeConverter.toVo(data.getSociete()));
         utilisateurDTO.setEntiteDTO(entiteConverter.toVo(data.getEntite()));
         utilisateurDTO.setProfilDTO(profilConverter.toVo(data.getProfil()));
+        utilisateurDTO.setRoleDTOList(roleConverter.toVoList(data.getRoles()));
         return utilisateurDTO;
     }
 
@@ -56,7 +59,7 @@ public class UtilisateurConverter implements MapperMethods <UtilisateurDTO, Util
         utilisateur.setSociete(societeConverter.toBo(data.getSocieteDTO()));
         utilisateur.setEntite(entiteConverter.toBo(data.getEntiteDTO()));
         utilisateur.setProfil(profilConverter.toBo(data.getProfilDTO()));
-
+        utilisateur.setRoles(roleConverter.toBoList(data.getRoleDTOList()));
         return utilisateur;
     }
 

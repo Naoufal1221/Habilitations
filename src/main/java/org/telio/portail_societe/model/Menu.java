@@ -69,7 +69,6 @@ public class Menu extends Auditable <String> {
                     @JoinColumn(name="societe_p",referencedColumnName = "societe"),
 
                                 }
-
             )
 
 

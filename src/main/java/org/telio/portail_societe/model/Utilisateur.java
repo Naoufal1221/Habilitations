@@ -11,6 +11,8 @@ import org.telio.portail_societe.audit.Auditable;
 import org.telio.portail_societe.idClass.UtilisateurID;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name="Utilisateur")
 @Entity
@@ -40,21 +42,25 @@ public class Utilisateur extends Auditable <String> {
     @ManyToOne(optional = false)
     @JoinColumn(name = "societe")
     private Societe societe;
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumnsOrFormulas(value = {
             @JoinColumnOrFormula(column = @JoinColumn(name="entite", referencedColumnName="id")),
             @JoinColumnOrFormula(formula = @JoinFormula(value = "societe", referencedColumnName = "societe"))
     })
     private Entite entite;
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumnsOrFormulas(value = {
             @JoinColumnOrFormula(column = @JoinColumn(name="profil", referencedColumnName="id")),
             @JoinColumnOrFormula(formula = @JoinFormula(value = "societe", referencedColumnName = "societe"))
     })
     private Profil profil;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    //@JoinTable(name = "utilisateur_role", joinColumns = @JoinColumn(name = "utilisateur_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles = new ArrayList<Role>();
 
-    public Utilisateur(String nom, String prenom, String login, String password, String statut, String tel, Societe societe, Entite entite, Profil profil) {
+
+    public Utilisateur(String nom, String prenom, String login, String password, String statut, String tel, Societe societe, Entite entite, Profil profil, List<Role> roles) {
         this.nom = nom;
         this.prenom = prenom;
         this.login = login;
@@ -64,5 +70,6 @@ public class Utilisateur extends Auditable <String> {
         this.societe = societe;
         this.entite = entite;
         this.profil = profil;
+        this.roles = roles;
     }
 }

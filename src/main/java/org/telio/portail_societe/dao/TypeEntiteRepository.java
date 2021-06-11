@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.telio.portail_societe.idClass.TypeEntiteID;
+import org.telio.portail_societe.model.Societe;
 import org.telio.portail_societe.model.TypeEntite;
 
 import java.util.List;
@@ -20,5 +21,6 @@ public interface TypeEntiteRepository extends JpaRepository <TypeEntite, TypeEnt
     @Query(value = "select * from type_entite te where te.type_mere is null",
     nativeQuery = true)
     List<TypeEntite> rechercheTypeMereByID ();
+    Boolean existsBySociete (Societe societe);
 
 }

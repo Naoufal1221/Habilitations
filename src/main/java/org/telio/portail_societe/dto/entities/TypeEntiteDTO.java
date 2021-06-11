@@ -32,6 +32,6 @@ public class TypeEntiteDTO extends Auditable<String> {
 
     public String toUpperCode()
     {
-        return this.nom.toUpperCase();
+        return this.code.toUpperCase();
     }
 }

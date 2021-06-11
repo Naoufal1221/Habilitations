@@ -4,9 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.telio.portail_societe.dao.*;
 import org.telio.portail_societe.dto.converter.*;
 import org.telio.portail_societe.dto.entities.*;
+import org.telio.portail_societe.metier.interfaces.IHabilitation;
+import org.telio.portail_societe.metier.interfaces.IUserService;
+import org.telio.portail_societe.model.*;
+
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -46,6 +53,19 @@ public class PortailSocieteApplication implements CommandLineRunner {
 	private TypeEntiteConverter typeEntiteConverter;
 	@Autowired
 	private EntiteConverter entiteConverter;
+	@Autowired
+	private IUserService iUserService;
+	@Autowired
+	private UtilisateurConverter utilisateurConverter;
+	@Autowired
+	private RoleConverter roleConverter;
+
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+		return bCryptPasswordEncoder;
+	}
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(PortailSocieteApplication.class, args);
@@ -153,6 +173,24 @@ public class PortailSocieteApplication implements CommandLineRunner {
 ////		menuRepository.save(new Menu("A","PORTAIL UTILISATEUR","MENU CONCU A TOUTE PERSONNE AYANT UN COMPTE","USER","OPERATION AFFICHAGE",tns,moderateur));
 ////
 //
+//		typeEntiteRepository.deleteAll();
+
+		//RoleDTO roleDTO = new RoleDTO("ADMIN");
+		//iUserService.persist(roleDTO);
+		RoleDTO admin = iUserService.searchRoleByLibele("ADMIN").getData();
+		SocieteDTO SocieteDTO = soConverter.toVo(societeRepository.findByNom("AD CONSULTING"));
+		TypeEntite type = typeEntiteRepository.findByNom("DIRECTION REGIONAL").get(0);
+		LocaliteDTO localiteDTO = localiteConverter.toVo(localiteRepository.findByNom("MAROC"));
+		//entiteRepository.save(new Entite("ab", "456", null, localiteConverter.toBo(localiteDTO), soConverter.toBo(SocieteDTO),type));
+
+		EntiteDTO entiteDTO = entiteConverter.toVo(entiteRepository.findByNom("ab").get(0));
+
+		ProfilDTO profilDTO = profilConverter.toVo(profilRepository.findByNom("PROFIL JAVA").get(0));
+
+
+		iUserService.persist(new UtilisateurDTO("AZAMI", "Omar", "omar.azami@gmail.com", "123456789", "public", "0623061248",
+												SocieteDTO, entiteDTO, profilDTO, Arrays.asList(admin)));
+
 
 	}
 }

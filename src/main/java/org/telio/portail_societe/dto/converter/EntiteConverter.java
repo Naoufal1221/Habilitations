@@ -39,6 +39,7 @@ public class EntiteConverter implements MapperMethods <EntiteDTO, Entite> {
 
     @Override
     public Entite toBo(EntiteDTO data) {
+        if (data == null) return null;
         Entite entite = new Entite();
         entite.setId(data.getId());
         entite.setNom(data.toUpperNom());

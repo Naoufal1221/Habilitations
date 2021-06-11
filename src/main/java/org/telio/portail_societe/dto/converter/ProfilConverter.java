@@ -32,6 +32,7 @@ public class ProfilConverter implements MapperMethods <ProfilDTO, Profil> {
 
     @Override
     public Profil toBo(ProfilDTO data) {
+        if (data == null) return null;
         Profil profil = new Profil();
         profil.setId(data.getId());
         profil.setNom(data.toUpperNom());

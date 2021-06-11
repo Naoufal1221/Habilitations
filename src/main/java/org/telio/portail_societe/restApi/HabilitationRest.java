@@ -9,6 +9,7 @@ import org.telio.portail_societe.dto.entities.*;
 import org.telio.portail_societe.generic.classes.ResponseOutput;
 import org.telio.portail_societe.idClass.ApplicationID;
 import org.telio.portail_societe.idClass.ProfilID;
+import org.telio.portail_societe.idClass.TypeEntiteID;
 import org.telio.portail_societe.metier.interfaces.IHabilitation;
 
 @RestController
@@ -234,5 +235,18 @@ public class HabilitationRest {
     }
 
 
+    @PostMapping("/add/type-entite")
+    public ResponseEntity <ResponseOutput <TypeEntiteDTO> > persist (@RequestBody TypeEntiteDTO typeEntiteDTO)
+    {
+        return new ResponseEntity<>(iHabilitation.persist(typeEntiteDTO), HttpStatus.OK);
+    }
 
+    @PatchMapping("/update/type-entite/{id}/{societe}")
+    public ResponseEntity <ResponseOutput <TypeEntiteDTO> > update ( @PathVariable("id") Long id, @PathVariable("societe") Long societe, @RequestBody TypeEntiteDTO typeEntiteDTO)
+    {
+        TypeEntiteID key = new TypeEntiteID();
+        key.setId(id);
+        key.setSociete(societe);
+        return  new ResponseEntity<>(iHabilitation.update(key, typeEntiteDTO), HttpStatus.OK);
+    }
 }
