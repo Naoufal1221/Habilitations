@@ -57,34 +57,24 @@ public class Menu extends Auditable <String> {
     })
     private Menu menuPere;
 
-    @ManyToMany(fetch = FetchType.EAGER ,cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinTable(name = "profilMenu",
-            joinColumns = {
-                    @JoinColumn(name = "Menu", referencedColumnName = "id"),
-                    @JoinColumn(name = "societe", referencedColumnName = "societe"),
-                    @JoinColumn(name = "application", referencedColumnName = "application"),
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "profil", referencedColumnName = "id"),
-                    @JoinColumn(name="societe_p",referencedColumnName = "societe"),
+//    @ManyToMany(fetch = FetchType.EAGER ,cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH})
+//    @JoinTable(name = "profilMenu",
+//            joinColumns = {
+//                    @JoinColumn(name = "Menu", referencedColumnName = "id"),
+//                    @JoinColumn(name = "societe", referencedColumnName = "societe"),
+//                    @JoinColumn(name = "application", referencedColumnName = "application"),
+//            },
+//            inverseJoinColumns = {
+//                    @JoinColumn(name = "profil", referencedColumnName = "id"),
+//                    @JoinColumn(name="societe_p",referencedColumnName = "societe"),
+//
+//                                }
+//            )
+//
+//
+//    private Set<Profil> profils = new HashSet<>();
 
-                                }
-            )
 
-
-    private Set<Profil> profils = new HashSet<>();
-
-    public Menu(String type, String nom, String description, String lien, String parametres, int ordre, Application application, Menu menuPere, Set<Profil> profils) {
-        this.type = type;
-        this.nom = nom;
-        this.description = description;
-        this.lien = lien;
-        this.parametres = parametres;
-        this.ordre = ordre;
-        this.application = application;
-        this.menuPere = menuPere;
-        this.profils = profils;
-    }
 
     public Menu(String type, String nom, String description, String lien, String parametres, int ordre, Application application, Menu menuPere) {
         this.type = type;

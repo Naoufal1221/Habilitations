@@ -188,8 +188,8 @@ public class PortailSocieteApplication implements CommandLineRunner {
 		ProfilDTO profilDTO = profilConverter.toVo(profilRepository.findByNom("PROFIL JAVA").get(0));
 
 
-		iUserService.persist(new UtilisateurDTO("AZAMI", "Omar", "omar.azami@gmail.com", "123456789", "public", "0623061248",
-												SocieteDTO, entiteDTO, profilDTO, Arrays.asList(admin)));
+//		iUserService.persist(new UtilisateurDTO("AZAMI", "Omar", "omar.azami@gmail.com", "123456789", "public", "0623061248",
+//												SocieteDTO, entiteDTO, profilDTO, Arrays.asList(admin)));
 
 
 	}

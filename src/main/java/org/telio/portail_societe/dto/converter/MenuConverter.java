@@ -34,7 +34,7 @@ public class MenuConverter implements MapperMethods <MenuDTO, Menu> {
         if(data.getMenuPere() != null) menuDTO.setMenuPereDTO(toVo(data.getMenuPere()));
         else menuDTO.setMenuPereDTO(null);
         menuDTO.setApplicationDTO(converter.toVo(data.getApplication()));
-        menuDTO.setProfilDTOS(proConverter.toVoList(data.getProfils()));
+//        menuDTO.setProfilDTOS(proConverter.toVoList(data.getProfils()));
         return menuDTO;
     }
 
@@ -62,7 +62,7 @@ public class MenuConverter implements MapperMethods <MenuDTO, Menu> {
         else{
             menu.setMenuPere(null);
         }
-        menu.setProfils(proConverter.toBoList(data.getProfilDTOS()));
+//        menu.setProfils(proConverter.toBoList(data.getProfilDTOS()));
         return menu;
     }
 
