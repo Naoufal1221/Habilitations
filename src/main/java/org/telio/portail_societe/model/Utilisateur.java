@@ -55,8 +55,8 @@ public class Utilisateur extends Auditable <String> {
     })
     private Profil profil;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    //@JoinTable(name = "utilisateur_role", joinColumns = @JoinColumn(name = "utilisateur_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @ManyToMany(cascade = CascadeType.DETACH)
+    @JoinTable(name = "utilisateur_role", joinColumns = {@JoinColumn(name = "utilisateur_id"), @JoinColumn(name = "societe_id")}, inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles = new ArrayList<Role>();
 
 

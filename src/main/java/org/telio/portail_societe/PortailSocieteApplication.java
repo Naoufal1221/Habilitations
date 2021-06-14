@@ -59,7 +59,8 @@ public class PortailSocieteApplication implements CommandLineRunner {
 	private UtilisateurConverter utilisateurConverter;
 	@Autowired
 	private RoleConverter roleConverter;
-
+	@Autowired
+	private UtilisateurRepository utilisateurRepository;
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -175,8 +176,8 @@ public class PortailSocieteApplication implements CommandLineRunner {
 //
 //		typeEntiteRepository.deleteAll();
 
-		//RoleDTO roleDTO = new RoleDTO("ADMIN");
-		//iUserService.persist(roleDTO);
+//		RoleDTO roleDTO = new RoleDTO("ADMIN");
+//		iUserService.persist(roleDTO);
 		RoleDTO admin = iUserService.searchRoleByLibele("ADMIN").getData();
 		SocieteDTO SocieteDTO = soConverter.toVo(societeRepository.findByNom("AD CONSULTING"));
 		TypeEntite type = typeEntiteRepository.findByNom("DIRECTION REGIONAL").get(0);
@@ -186,10 +187,10 @@ public class PortailSocieteApplication implements CommandLineRunner {
 		EntiteDTO entiteDTO = entiteConverter.toVo(entiteRepository.findByNom("ab").get(0));
 
 		ProfilDTO profilDTO = profilConverter.toVo(profilRepository.findByNom("PROFIL JAVA").get(0));
+		//utilisateurRepository.deleteAll();
 
-
-//		iUserService.persist(new UtilisateurDTO("AZAMI", "Omar", "omar.azami@gmail.com", "123456789", "public", "0623061248",
-//												SocieteDTO, entiteDTO, profilDTO, Arrays.asList(admin)));
+		iUserService.persist(new UtilisateurDTO("Sarf", "Naoufal", "naoufal.sarf97@gmail.com", "password1337", "public", "0623061248",
+												SocieteDTO, entiteDTO, profilDTO, Arrays.asList(admin)));
 
 
 	}
